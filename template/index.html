@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NODE: SUSTAIN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <p class="badge">OFFLINE HUB</p>
+            <h1>NODE: SUSTAIN</h1>
+        </header>
 
+        <div class="card">
+            <div id="indicator" class="dot"></div>
+            <h2 id="user-uid">Waiting for ID...</h2>
+            <p id="status">System Ready</p>
+        </div>
+    </div>
+
+    <script>
+        var socket = io();
+        socket.on('update_ui', function(data) {
+            document.getElementById('user-uid').innerText = data.uid;
+            document.getElementById('status').innerText = "Access Logged";
+            document.getElementById('indicator').style.background = "#00ff00";
+            
+            // Resets after 3 seconds
+            setTimeout(() => {
+                document.getElementById('status').innerText = "Ready for Scan";
+                document.getElementById('indicator').style.background = "#ccc";
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

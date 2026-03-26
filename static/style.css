@@ -1,33 +1,116 @@
+:root {
+    /* Color Palette */
+    --dark-bg: #000F01;
+    --card-bg: #032221;
+    --brand-green: #008181;
+    --glow-mint: #17B280;
+    --off-white: #F4F0EC;
+    --muted-text: #3F514F;
+}
+
+/* Background and Page centering */
 body {
-    background: #f4f4f7;
-    color: #1a1a1c;
-    font-family: 'Inter', -apple-system, sans-serif;
+    background: radial-gradient(circle at top, #052c2a, var(--dark-bg));
+    color: var(--off-white);
+    font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding: 20px;
 }
 
-.container { text-align: center; width: 100%; max-width: 350px; }
+/* Main content wrapper */
+.container { 
+    width: 100%; 
+    max-width: 450px; 
+    text-align: center;
+}
 
-.badge { font-size: 10px; font-weight: bold; color: #888; letter-spacing: 2px; }
+/* QCU sheeeesh */
+.qcu-banner {
+    background: var(--brand-green);
+    color: var(--dark-bg);
+    padding: 6px 20px;
+    display: inline-block;
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
 
+header h1 { font-size: 24px; margin: 0; font-weight: 800; }
+.highlight { color: var(--brand-green); }
+.sub-header { font-size: 10px; color: var(--muted-text); margin-bottom: 30px; }
+
+/* Main Card styling and centering */
 .card {
-    background: white;
-    padding: 40px 20px;
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    margin-top: 20px;
+    background: var(--card-bg);
+    border-top: 4px solid var(--brand-green);
+    border-radius: 16px;
+    padding: 50px 30px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
 }
 
-.dot {
+/* Status light next to reader text */
+.card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 35px;
+}
+
+.status-dot {
     width: 12px; height: 12px;
-    background: #ccc;
+    background: #12201e;
     border-radius: 50%;
-    margin: 0 auto 20px;
-    transition: 0.3s;
+    transition: 0.4s;
 }
 
-h1 { font-size: 24px; margin: 5px 0; letter-spacing: -1px; }
-h2 { font-family: monospace; font-size: 20px; color: #007aff; }
+/* UID text styles */
+h2 { 
+    font-family: 'JetBrains Mono', monospace; 
+    font-size: 28px; 
+    color: var(--muted-text); 
+    margin: 0; 
+    transition: 0.3s; 
+}
+
+/* Card bottom divider */
+.info-footer { 
+    margin-top: 35px; 
+    padding-top: 25px; 
+    width: 100%;
+    border-top: 1px solid rgba(255,255,255,0.05); 
+}
+
+/* Log table styles */
+.logs-container { margin-top: 40px; width: 100%; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th { background: rgba(0, 129, 129, 0.1); color: var(--brand-green); padding: 14px; font-size: 10px; }
+td { padding: 14px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; }
+
+/* Scale up for Laptop resolution */
+@media (min-width: 992px) {
+    .container { max-width: 750px; }
+    .card { padding: 80px; }
+    header h1 { font-size: 38px; }
+    h2 { font-size: 48px; }
+}
+
+/* Success animations when card is scanned */
+.active-scan { color: var(--glow-mint) !important; text-shadow: 0 0 20px rgba(23, 178, 128, 0.5); }
+.active-dot { background: var(--glow-mint) !important; box-shadow: 0 0 15px var(--glow-mint); }

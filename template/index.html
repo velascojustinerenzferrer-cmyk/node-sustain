@@ -3,35 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NODE: SUSTAIN</title>
+    <title>QCU | Student Identity Node</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <p class="badge">OFFLINE HUB</p>
-            <h1>NODE: SUSTAIN</h1>
+            <div class="qcu-banner">CAMPUS GATE ACCESS</div>
+            <h1>QUEZON CITY <span class="highlight">UNIVERSITY</span></h1>
+            <p class="sub-header">STUDENT ATTENDANCE SYSTEM // NODE: SUSTAIN</p>
         </header>
 
         <div class="card">
-            <div id="indicator" class="dot"></div>
-            <h2 id="user-uid">Waiting for ID...</h2>
-            <p id="status">System Ready</p>
+            <div class="card-top">
+                <div id="indicator" class="status-dot"></div>
+                <span class="system-text">RFID READER ACTIVE</span>
+            </div>
+            
+            <div class="id-display">
+                <label>STUDENT TOKEN / UID</label>
+                <h2 id="user-uid">READY TO SCAN</h2>
+            </div>
+
+            <div class="info-footer">
+                <p id="status">PLEASE TAP YOUR STUDENT ID</p>
+            </div>
+        </div>
+
+        <div class="logs-container">
+            <h3>RECENT ACTIVITY</h3>
+            <table id="logs-table">
+                <thead>
+                    <tr>
+                        <th>TIME</th>
+                        <th>TOKEN ID</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="logs-body">
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
         var socket = io();
+
+        // Runs when Python sends a scan event
         socket.on('update_ui', function(data) {
-            document.getElementById('user-uid').innerText = data.uid;
-            document.getElementById('status').innerText = "Access Logged";
-            document.getElementById('indicator').style.background = "#00ff00";
+            const uidEl = document.getElementById('user-uid');
+            const statusEl = document.getElementById('status');
+            const indicator = document.getElementById('indicator');
+            const logsBody = document.getElementById('logs-body');
             
-            // Resets after 3 seconds
+            // Updates the main display
+            uidEl.innerText = data.uid;
+            uidEl.classList.add('active-scan');
+            statusEl.innerText = "ACCESS LOGGED: " + data.status.toUpperCase();
+            statusEl.classList.add('active-scan');
+            indicator.classList.add('active-dot');
+
+            // Adds a new row to the table
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + 
+                            now.getMinutes().toString().padStart(2, '0');
+            
+            let row = logsBody.insertRow(0);
+            row.innerHTML = `<td>${timeStr}</td><td>${data.uid}</td><td>VERIFIED</td>`;
+            
+            // Keeps the table to 5 rows max
+            if (logsBody.rows.length > 5) {
+                logsBody.deleteRow(5);
+            }
+
+            // Resets the screen after 3 seconds
             setTimeout(() => {
-                document.getElementById('status').innerText = "Ready for Scan";
-                document.getElementById('indicator').style.background = "#ccc";
+                uidEl.innerText = "READY TO SCAN";
+                uidEl.classList.remove('active-scan');
+                statusEl.innerText = "PLEASE TAP YOUR STUDENT ID";
+                statusEl.classList.remove('active-scan');
+                indicator.classList.remove('active-dot');
             }, 3000);
         });
     </script>
